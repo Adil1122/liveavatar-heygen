@@ -1,40 +1,19 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import {
   LiveAvatarContextProvider,
   useSession,
-  useTextChat,
-  useVoiceChat,
 } from "../liveavatar";
 import { SessionState, VoiceChatConfig } from "@heygen/liveavatar-web-sdk";
-import { useAvatarActions } from "../liveavatar/useAvatarActions";
 import { SessionMode } from "./LiveAvatarDemo";
-
-const Button: React.FC<{
-  onClick: () => void;
-  disabled?: boolean;
-  children: React.ReactNode;
-}> = ({ onClick, disabled, children }) => {
-  return (
-    <button
-      onClick={onClick}
-      disabled={disabled}
-      className="bg-white text-black px-4 py-2 rounded-md"
-    >
-      {children}
-    </button>
-  );
-};
 
 import { useChatHistory } from "../liveavatar/useChatHistory";
 import { MessageSender } from "../liveavatar/types";
 
 const LiveAvatarSessionComponent: React.FC<{
-  mode: SessionMode;
   onSessionStopped: () => void;
-}> = ({ mode, onSessionStopped }) => {
-  const [message, setMessage] = useState("");
+}> = ({ onSessionStopped }) => {
   const {
     sessionState,
     isStreamReady,
@@ -185,7 +164,8 @@ const LiveAvatarSessionComponent: React.FC<{
         </div>
       </div>
 
-      <style jsx>{`
+      <style dangerouslySetInnerHTML={{
+        __html: `
         .mirror {
           transform: scaleX(-1);
         }
@@ -202,18 +182,17 @@ const LiveAvatarSessionComponent: React.FC<{
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
           background: rgba(255, 255, 255, 0.1);
         }
-      `}</style>
+      `}} />
     </div>
   );
 };
 
 export const LiveAvatarSession: React.FC<{
-  mode: SessionMode;
+  mode?: SessionMode;
   sessionAccessToken: string;
   onSessionStopped: () => void;
   voiceChatConfig?: boolean | VoiceChatConfig;
 }> = ({
-  mode,
   sessionAccessToken,
   onSessionStopped,
   voiceChatConfig = true,
@@ -224,7 +203,6 @@ export const LiveAvatarSession: React.FC<{
         voiceChatConfig={voiceChatConfig}
       >
         <LiveAvatarSessionComponent
-          mode={mode}
           onSessionStopped={onSessionStopped}
         />
       </LiveAvatarContextProvider>

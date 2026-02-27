@@ -34,19 +34,6 @@ export const LiveAvatarDemo = () => {
     }
   };
 
-  const handleStartLiteSession = async () => {
-    const res = await fetch("/api/start-lite-session", {
-      method: "POST",
-    });
-    if (!res.ok) {
-      const error = await res.json();
-      setError(error.error);
-      return;
-    }
-    const { session_token } = await res.json();
-    setSessionToken(session_token);
-    setMode("LITE");
-  };
 
   const onSessionStopped = () => {
     // Reset the FE state
